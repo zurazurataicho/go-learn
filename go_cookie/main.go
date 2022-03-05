@@ -1,7 +1,6 @@
 package main
 
 import (
-	_ "encoding/base64"
 	"fmt"
 	"net/http"
 	"time"

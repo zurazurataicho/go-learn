@@ -13,6 +13,8 @@ func file() {
 		panic(err)
 	}
 
+	fmt.Println("=== file ===")
+
 	read1, _ := ioutil.ReadFile("data1")
 	fmt.Print(string(read1))
 
@@ -20,7 +22,7 @@ func file() {
 	defer file1.Close()
 
 	bytes, _ := file1.Write(data)
-	fmt.Printf("Wrote % bytes to file\n")
+	fmt.Printf("Wrote %d bytes to file\n", bytes)
 
 	file2, _ := os.Open("data2")
 	defer file2.Close()

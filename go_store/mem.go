@@ -33,6 +33,7 @@ func mem() {
 	store(&post4)
 	post3.Id = 100
 
+	fmt.Println("=== mem ===")
 	fmt.Println(PostById[1])
 	fmt.Println(PostById[2])
 

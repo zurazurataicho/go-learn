@@ -79,7 +79,7 @@ func server2() {
 }
 
 /**
- * Server3: 複数のハンドラ関数
+ * Server3: 複数のハンドラ関数(ServeMux)
  */
 func server3() {
 	// ServeMuxを生成
@@ -102,7 +102,7 @@ func server3() {
 }
 
 /**
- * Server4: 複数のハンドラ関数
+ * Server4: 複数のハンドラ関数(net/http)
  */
 func server4() {
 	// http.HandleFunc()でルートURLをHandler関数(*1)と紐付ける

@@ -25,6 +25,8 @@ func main() {
 		server3()
 	} else if i == 4 {
 		server4()
+	} else if i == 5 {
+		server5()
 	}
 }
 
@@ -115,7 +117,30 @@ func server4() {
 	})
 
 	server := &http.Server{
+		Addr: ":8080",
+	}
+	server.ListenAndServe()
+}
+
+
+/**
+ * Server5: 複数のハンドラ(http.HandlerFunc)
+ */
+// 
+// 
+func DocumentRoot(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Server 5 Document Root")
+}
+
+func Hello(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Server 5 Hello")
+}
+
+func server5() {
+	server := &http.Server{
 		Addr:    ":8080",
 	}
+	http.HandleFunc("/", http.HandlerFunc(DocumentRoot))
+	http.HandleFunc("/hello", http.HandlerFunc(Hello))
 	server.ListenAndServe()
 }

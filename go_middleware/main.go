@@ -6,28 +6,14 @@ import (
 	"golang.org/x/sync/errgroup"
 	"log"
 	"net/http"
-	"zura.org/middleware/middleware"
+	middleware "zura.org/middleware/internal/middleware"
+	handler "zura.org/middleware/internal/handler"
 )
-
-func main() {
-	if err := run(context.Background()); err != nil {
-		log.Printf("Error: %v\n", err)
-	}
-}
-
-func helloHandler(w http.ResponseWriter, r *http.Request) {
-	user := r.Context().Value("user").(string)
-	fmt.Fprintln(w, "Hello, %s!", user)
-}
-
-func goodByeHandler(w http.ResponseWriter, r *http.Request) {
-	user := r.Context().Value("user").(string)
-	fmt.Fprintln(w, "Good bye, %s!", user)
-}
 
 func run(ctx context.Context) error {
 	mux := http.NewServeMux()
-	mux.Handle("/hello", middleware.ChainMiddleware(http.HandlerFunc(helloHandler), middleware.AuthMiddleware, middleware.LogMiddleware))
+	mux.Handle("/hello", middleware.ChainMiddleware(http.HandlerFunc(handler.HelloHandler), middleware.AuthMiddleware, middleware.LogMiddleware))
+	mux.Handle("/goodbye", middleware.ChainMiddleware(http.HandlerFunc(handler.GoodByeHandler), middleware.AuthMiddleware, middleware.LogMiddleware))
 
 	s := &http.Server{
 		Addr: ":8080",
@@ -50,4 +36,10 @@ func run(ctx context.Context) error {
 	log.Println("Server gracefully stopped")
 
 	return eg.Wait()
+}
+
+func main() {
+	if err := run(context.Background()); err != nil {
+		log.Printf("Error: %v\n", err)
+	}
 }

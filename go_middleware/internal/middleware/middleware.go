@@ -6,7 +6,9 @@ import (
 	"net/http"
 )
 
-func withUser(ctx context.Context, user string) context.Context {
+type ContextKey string
+
+func withUser(ctx context.Context, user ContextKey) context.Context {
 	return context.WithValue(ctx, "user", user)
 }
 
@@ -17,8 +19,9 @@ func AuthMiddleware(next http.Handler) http.Handler {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
-		ctx := r.Context()
-		ctx = withUser(ctx, "AuthenticatedUser")
+		var user ContextKey = "AuthenticatedUser"
+		ctx := withUser(r.Context(), user)
+		log.Printf("Setting user in context: %s", user) // debug
 		r = r.WithContext(ctx)
 
 		next.ServeHTTP(w, r)
